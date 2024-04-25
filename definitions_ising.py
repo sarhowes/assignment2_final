@@ -94,10 +94,11 @@ class Ising_Model:
             dict: dictionary matching the H_diff values to a probability (between 0 and 1) of accepting the spin flip
         """
         probabilities = []
-        for H_diff in [1, 2, 3, 4, 5, 6, 7, 8,9, 10]:
+
+        for H_diff in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]: # extended range for ext_mag
             p = np.exp(-beta*(H_diff))
             probabilities.append(p)
-        prob_dict = dict(zip([1, 2, 3, 4, 5, 6, 7, 8,9, 10], probabilities))
+        prob_dict = dict(zip([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], probabilities))
         return prob_dict
 
 

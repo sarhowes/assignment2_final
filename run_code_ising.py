@@ -12,6 +12,10 @@ Or, you can choose the default values for the simulation:
   including the critical temperature
 * No external magnetic field
 ###################################################
+Please note that the external magnetic field has only been tested for
+values of -1.0, 0.0, 0.5, and 1.0, so choosing other values may result
+in the code failing to run. This is most likely due to a key error in 
+the probability dictionary that is created.
 
 This script imports the class Ising_Model from definitions_ising.py
 to run the monte carlo simulation.
@@ -30,6 +34,10 @@ re-doing the previous section), you can do so by commenting out
 whichever part of the run you want to skip (first_run_to_equilibrium,
 second_run_after_equilibrium, specific_heat_magnetic_susceptibility)
 and un-commenting the np.load() commands for the values that are calculated.
+
+If you just want to plot the temperature plots with already-saved data,
+comment out everything in __main__ before line 527, and un-comment the 
+functions after this.
 
 """
 
@@ -104,8 +112,8 @@ def second_run_after_equilibrium(first_grid:np.ndarray, first_energy:np.array,
         temp_folder (str): name of temperature folder to save data to
 
     Returns:
-        np.ndarray, np.array, np.array, np.array: the updated grid, energy and magnetization values after equilibrium, 
-                                                  and the autocorrelation function over time
+        np.ndarray, (np.array)x3, float: the updated grid, energy and magnetization values after equilibrium, 
+                                         the autocorrelation function over time, and the correlation time
     """
 
     energy_eq = []
@@ -247,11 +255,11 @@ def simulation_setup():
         total_number_steps = int(float(input('>> Input number of steps before equilibrium: ')))
         t_max = int(float(input('>> Input number of steps after equilibrium: ')))
         N = int(float(input('>> Input length of grid side (N): ')))
-        ext_mag = float(input('>> Input external magnetic field: '))
+        ext_mag = float(input('>> Input external magnetic field (tested values: -1.0, 0.0, 0.5, 1.0): '))
         start_temp = float(input('>> Input starting temperature: '))
         stop_temp = float(input('>> Input final temperature: '))
         step_temp = float(input('>> Input temperature step size: '))
-        temperature = np.arange(start_temp, stop_temp, step_temp)
+        temperature = np.arange(start_temp, stop_temp+step_temp, step_temp)
     elif custom_setup == 'n':
         total_number_steps = int(5e6)        
         t_max = int(100000)
@@ -282,7 +290,7 @@ def simulation_setup():
         '=================================='
     )
 
-    proceed = input('>> Proceed with setup? (y/n):')
+    proceed = input('>> Finish setup? (y/n): ')
 
     if proceed == 'n':
         exit()
@@ -516,22 +524,23 @@ if __name__ == "__main__":
     np.save(f'{results_path}/values_over_temperature/temperature.npy', temperature)
     # ----------------------------------------------------------------------------------------------
 
+    # ----------------------------------------------------------------------------------------------
     # ------------------------- load in saved arrays to plot ---------------------------------------
-    plotting = Plotting(N=N, temp=None, T_critical=T_critical, results_path=results_path)
-    mag_sus_total = np.load(f'{results_path}/values_over_temperature/mag_sus_total.npy')
-    mag_sus_total_error = np.load(f'{results_path}/values_over_temperature/mag_sus_total_error.npy')
+    # plotting = Plotting(N=N, temp=None, T_critical=T_critical, results_path=results_path)
+    # mag_sus_total = np.load(f'{results_path}/values_over_temperature/mag_sus_total.npy')
+    # mag_sus_total_error = np.load(f'{results_path}/values_over_temperature/mag_sus_total_error.npy')
 
-    specific_heat_total = np.load(f'{results_path}/values_over_temperature/specific_heat_total.npy')
-    specific_heat_total_error = np.load(f'{results_path}/values_over_temperature/specific_heat_total_error.npy')
+    # specific_heat_total = np.load(f'{results_path}/values_over_temperature/specific_heat_total.npy')
+    # specific_heat_total_error = np.load(f'{results_path}/values_over_temperature/specific_heat_total_error.npy')
 
-    magnetization_values_after_equilibrium = np.load(f'{results_path}/values_over_temperature/mag_values_after_eq.npy')
-    magnetization_errors_after_equilibrium = np.load(f'{results_path}/values_over_temperature/magnetization_errors_after_equilibrium.npy')
+    # magnetization_values_after_equilibrium = np.load(f'{results_path}/values_over_temperature/mag_values_after_eq.npy')
+    # magnetization_errors_after_equilibrium = np.load(f'{results_path}/values_over_temperature/magnetization_errors_after_equilibrium.npy')
 
-    energy_values_after_equilibrium = np.load(f'{results_path}/values_over_temperature/energy_values_after_eq.npy')
-    energy_errors_after_equilibrium = np.load(f'{results_path}/values_over_temperature/energy_errors_after_equilibrium.npy')
+    # energy_values_after_equilibrium = np.load(f'{results_path}/values_over_temperature/energy_values_after_eq.npy')
+    # energy_errors_after_equilibrium = np.load(f'{results_path}/values_over_temperature/energy_errors_after_equilibrium.npy')
 
-    corr_time_values = np.load(f'{results_path}/values_over_temperature/corr_time_values.npy')
-    temperature = np.load(f'{results_path}/values_over_temperature/temperature.npy')
+    # corr_time_values = np.load(f'{results_path}/values_over_temperature/corr_time_values.npy')
+    # temperature = np.load(f'{results_path}/values_over_temperature/temperature.npy')
     # -----------------------------------------------------------------------------------------------
 
     print('Plotting over temperature...')

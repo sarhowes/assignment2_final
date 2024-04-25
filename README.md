@@ -39,7 +39,7 @@ simulation will run. The simulation will create new folders within the directory
 first based off the universal values chosen for the 
 simulation (labelled using the grid size and value
 for the external magnetic field). Then sub-folders will be created within these to store data for each 
-of the temperature values that are performed. Within these sub-folders, all the values that are calculated over the three runs are saved. A data folder will also be made for average quantities plotted over temperature. Lastly, folders for the plots will be made, including one for the energy, magnetization, grids, autocorrelation function, and plots over temperature. 
+of the temperature values that are performed. Within these sub-folders, all the values that are calculated over the three runs are saved. A data folder will also be made for average quantities plotted over temperature (labelled "values_over_temperature"). Lastly, folders for the plots will be made, including one for the energy, magnetization, grids, autocorrelation function, and plots over temperature (labelled "temperature_figs"). 
 
 A typical directory will look like this:
 
@@ -50,6 +50,9 @@ A typical directory will look like this:
 * values_over_temperature
 * temperature_figs
 * magnetization_figs
+
 (...etc.)
 
 Lastly, if you have data that is already saved for a run and you wish to simply plot results, you can do so by commenting out the functions you want to skip and un-commenting the np.load() commands. This is explained more in detail in the description for `run_code_ising.py`
+
+Its important to note that adding an external magnetic field has only been tested on values of -1.0, 0.0, 0.5, and 1.0, so selecting values outside this range may result in the code failing to run, this is most likely due to a key error in the probability dictionary that is created.
