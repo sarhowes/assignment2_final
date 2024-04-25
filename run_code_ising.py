@@ -27,7 +27,7 @@ folders for the figures that are generated.
 If you already have data that is stored and want to use this (for
 example, just to plot values or run the next section of code without
 re-doing the previous section), you can do so by commenting out
-whichever part of the run you want to skip (firs_run_to_equilibrium,
+whichever part of the run you want to skip (first_run_to_equilibrium,
 second_run_after_equilibrium, specific_heat_magnetic_susceptibility)
 and un-commenting the np.load() commands for the values that are calculated.
 
