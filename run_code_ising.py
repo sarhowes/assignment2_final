@@ -36,7 +36,7 @@ second_run_after_equilibrium, specific_heat_magnetic_susceptibility)
 and un-commenting the np.load() commands for the values that are calculated.
 
 If you just want to plot the temperature plots with already-saved data,
-comment out everything in __main__ before line 527, and un-comment the 
+comment out everything in __main__ before line 528, and un-comment the 
 functions after this.
 
 """
@@ -260,6 +260,7 @@ def simulation_setup():
         stop_temp = float(input('>> Input final temperature: '))
         step_temp = float(input('>> Input temperature step size: '))
         temperature = np.arange(start_temp, stop_temp+step_temp, step_temp)
+
     elif custom_setup == 'n':
         total_number_steps = int(5e6)        
         t_max = int(100000)
@@ -272,7 +273,9 @@ def simulation_setup():
     
     temperature = np.round(temperature, 1)
     temperature = list(temperature)
-    temperature.append(2.269)
+    add_tcrit = input('>> Add critical temperature? (T=2.269) y/n: ')
+    if add_tcrit == 'y':
+        temperature.append(2.269)
     temperature.sort()
     temperature = np.array(temperature)
     kb = 1
@@ -440,10 +443,11 @@ if __name__ == "__main__":
                                                                         prob_dict, t_max, results_path, temp_folder)
 
         ## ------------------------ load in files to skip second calculation ------------------------------------
-        # autocorrelation_function = np.load(f'{results_path}/{temp_folder}/autocorrelation_function.npy')
         # second_grid = np.load(f'{results_path}/{temp_folder}/second_grid.npy')
         # energy_after_equilibrium = np.load(f'{results_path}/{temp_folder}/energy_after_equilibrium.npy')
         # magnetization_after_equilibrium = np.load(f'{results_path}/{temp_folder}/magnetization_after_equilibrium.npy')
+        
+        # autocorrelation_function = np.load(f'{results_path}/{temp_folder}/autocorrelation_function.npy')
         # tau = np.load(f'{results_path}/{temp_folder}/tau.npy')
         
         ## ------------------------------------------------------------------------------------------------------
@@ -468,10 +472,11 @@ if __name__ == "__main__":
         # specific_heat_all_blocks = np.load(f'{results_path}/{temp_folder}/specific_heat.npy')
         ## ------------------------------------------------------------------------------------------------------
 
+        print('plotting final grid...')
+        plotting.plot_grid_after_equilibrium(third_grid)
 
         # find energy and mag error
         magnetization_error, energy_error = model.calc_simple_errors(tau, t_max, magnetization_block/N**2, energy_block/N**2)
-
 
         # # # --------------------------- appending results to temperature array -----------------------------------
         corr_time_values.append(tau)
@@ -488,10 +493,6 @@ if __name__ == "__main__":
         magnetization_errors_after_equilibrium.append(magnetization_error)
         energy_errors_after_equilibrium.append(energy_error)
         # # ------------------------------------------------------------------------------------------------------
-
-        print('plotting final grid...')
-        plotting.plot_grid_after_equilibrium(third_grid)
-
 
         ################################### END OF TEMPERATURE LOOP #############################################
 
