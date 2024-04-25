@@ -266,7 +266,7 @@ def simulation_setup():
         t_max = int(100000)
         N = 50
         ext_mag = 0.0
-        temperature =  np.arange(1.0, 4.0, 0.2)
+        temperature =  np.arange(1.0, 4.2, 0.2)
     else:
         print('Unknown command')
         exit()
